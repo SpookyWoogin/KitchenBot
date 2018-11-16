@@ -1,12 +1,13 @@
 import os
 import time
 import re
+import sys
 from slackclient import SlackClient
 import random
+import Auth
+from Auth import botauth
 
-BotAuth = input("Enter Bot Auth Code: ")
-
-slack_client = SlackClient(BotAuth)
+slack_client = SlackClient(botauth)
 starterbot_id = None
 
 RTM_READ_DELAY = 1
@@ -22,6 +23,7 @@ HelloWorld = ", say something generic."
 SongRequest = ", I want to listen to some music." , ", I want to listen to some music"
 SelfDepricatingCommand = ", do my homework for me." , ", do my homework for me"
 PingPong = ", think fast!" , ", think fast"
+Terminate = "Terminate"
 
 def parse_bot_commands(slack_events):
     for event in slack_events:
@@ -163,6 +165,9 @@ https://www.youtube.com/watch?v=il0wlnqq3V8''',
 
     if command.startswith(PingPong):
         response = "*Dodges Bits and Bytes*"
+
+    if command.startswith(Terminate):
+        exit()
 
     slack_client.api_call(
         "chat.postMessage",
